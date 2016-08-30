@@ -71,6 +71,8 @@ all: $(BIN)/$(TARGET).vpk
 		\
 		--add resources/sounds/snd_button1.wav=files/snd_button1.wav \
 		--add resources/sounds/snd_button2.wav=files/snd_button2.wav \
+		\
+		--add resources/fonts/MyriadPro.otf=files/MyriadPro.otf \
 	$(BIN)/$(TARGET).vpk
 
 

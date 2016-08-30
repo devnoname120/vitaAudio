@@ -44,13 +44,12 @@ if ( touch_check )
 if ( touch_check_released )
 	{
 	// RESET BUTTON STATES
-	int btnstate_btn1				= 0;
-	int btnstate_btn2				= 0;
-	int btnstate_btn3				= 0;
-	
+	btnstate_btn1				= 0;
+	btnstate_btn2				= 0;
+	btnstate_btn3				= 0;
 	
 	// BUTTONS
-	if ( point_in_rectangle( touch_x, touch_y, 44,  61, 362, 115 ) )	{   } 	// BUTTON 1
-	if ( point_in_rectangle( touch_x, touch_y, 44, 246, 362, 299 ) )	{   }	// BUTTON 2
-	if ( point_in_rectangle( touch_x, touch_y, 44, 425, 362, 478 ) )	{   }	// BUTTON 3
+	if ( point_in_rectangle( touch_x, touch_y, 44,  61, 362, 115 ) )	{ PlayAudio( &snd_button1 ); } 	// BUTTON 1
+	if ( point_in_rectangle( touch_x, touch_y, 44, 246, 362, 299 ) )	{  }	// BUTTON 2
+	if ( point_in_rectangle( touch_x, touch_y, 44, 425, 362, 478 ) )	{  }	// BUTTON 3
 	}

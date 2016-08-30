@@ -57,7 +57,11 @@ int main()
 	// LOAD TEXTURES
 	vita2d_texture *img_bg 		= vita2d_load_PNG_buffer( &_binary_resources_sprites_img_bg_png_start 	); // Background image
 	vita2d_texture *img_btn 	= vita2d_load_PNG_buffer( &_binary_resources_sprites_img_btn_png_start 	); // button image
-	vita2d_texture *img_btnp 	= vita2d_load_PNG_buffer( &_binary_resources_sprites_img_btnp_png_start 	); // button pressed image
+	vita2d_texture *img_btnp 	= vita2d_load_PNG_buffer( &_binary_resources_sprites_img_btnp_png_start ); // button pressed image
+	
+	// LOAD FONT
+	vita2d_font *font_24 			= vita2d_load_font_file( "ux0:/app/VITAUDIO1/files/MyriadPro.otf" );
+	vita2d_font *font_30 			= vita2d_load_font_file( "ux0:/app/VITAUDIO1/files/MyriadPro.otf" );
 	
 	// SET TOUCH SAMPLING
 	sceTouchSetSamplingState( SCE_TOUCH_PORT_FRONT, 1 );
@@ -67,7 +71,7 @@ int main()
 	InitializeAudio( &snd_button1 );
 	
 	// LOAD AUDIO FILES
-	LoadWav( &snd_button1, "ux0:/app/VITAUDIO/files/snd_button1.wav", AUDIO_OUT_MAIN, 0 );
+	LoadWav( &snd_button1, "ux0:/app/VITAUDIO1/files/snd_button1.wav", AUDIO_OUT_MAIN, 0 );
 	
 	while (1)
 		{
@@ -85,14 +89,28 @@ int main()
 		vita2d_draw_texture( img_bg, 0, 0 );
 		
 		// DRAW BUTTONS
-		if ( btnstate_btn1 ) 	{ vita2d_draw_texture( img_btn,   44,   61 ); }
-		else					{ vita2d_draw_texture( img_btnp,  44,   61 ); }
+		if ( btnstate_btn1 ) 	{ vita2d_draw_texture( img_btnp, 44,  61 ); }
+		else					{ vita2d_draw_texture( img_btn,  44,  61 ); }
+		vita2d_font_draw_text( font_24, 123, 92, RGBA8( 255, 255, 255, 255 ), 24, "Play Wav Sound" );
 		
-		if ( btnstate_btn2 ) 	{ vita2d_draw_texture( img_btn,   44,  246 ); }
-		else					{ vita2d_draw_texture( img_btnp,  44,  246 ); }
+		if ( btnstate_btn2 ) 	{ vita2d_draw_texture( img_btnp, 44, 246 ); }
+		else					{ vita2d_draw_texture( img_btn,  44, 246 ); }
+		vita2d_font_draw_text( font_24, 123, 278, RGBA8( 255, 255, 255, 255 ), 24, "Play Ogg Sound" );
 		
-		if ( btnstate_btn3 ) 	{ vita2d_draw_texture( img_btn,   44,  425 ); }
-		else					{ vita2d_draw_texture( img_btnp,  44,  425 ); }
+		if ( btnstate_btn3 ) 	{ vita2d_draw_texture( img_btnp, 44, 425 ); }
+		else					{ vita2d_draw_texture( img_btn,  44, 425 ); }
+		vita2d_font_draw_text( font_24, 89, 458, RGBA8( 255, 255, 255, 255 ), 24, "Play Background Music" );
+		
+		// DRAW DEBUG
+		vita2d_font_draw_textf( font_24, 430, 140, RGBA8( 255, 255, 255, 255 ), 24, "%s%d%s%s%d%s%s%d%s%s%s%d%s%s%d",
+																									"touch_check              = ", touch_check, "\n",
+																									"touch_check_pressed      = ", touch_check_pressed,"\n",
+																									"touch_check_pressed_prev = ", touch_check_pressed_prev,"\n",
+																									"\n",
+																									"touch_check_released     = ", touch_check_released,"\n",
+																									"touch_check_released_prev= ", touch_check_released_prev
+																									);
+		
 		
 		// FINISH DRAW CALL
 		vita2d_end_drawing();
