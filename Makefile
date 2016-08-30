@@ -1,4 +1,4 @@
-TITLE_ID 	= 	VITAUDIO
+TITLE_ID 	= 	VITAUDIO1
 TARGET   	= 	VitaAudio
 TITLE		= 	vitaAudio Example
 OBJS     	= 	src/main.o resources/sprites/img_bg.o resources/sprites/img_btn.o resources/sprites/img_btnp.o \
@@ -52,11 +52,10 @@ BIN 		= bin
 PREFIX  	= arm-vita-eabi
 CC      	= $(PREFIX)-gcc
 CXX      	= $(PREFIX)-g++
-CFLAGS  	= -Wl,-q -Wall -O3 -Wno-unused-variable -Wno-unused-but-set-variable
+CFLAGS  	= -Wl,-q -Wall -O3 -std=c99 -Wno-unused-variable -Wno-unused-but-set-variable
 CXXFLAGS 	= $(CFLAGS) -std=c++11 -fno-rtti -fno-exceptions
 ASFLAGS 	= $(CFLAGS)
-
-
+PSVITAIP 	= 10.0.63
 
 all: $(BIN)/$(TARGET).vpk
 
@@ -64,7 +63,7 @@ all: $(BIN)/$(TARGET).vpk
 
 %.vpk: $(BIN)/eboot.bin
 	vita-mksfoex -d PARENTAL_LEVEL=1 -s APP_VER=00.40 -s TITLE_ID=$(TITLE_ID) "$(TITLE)" $(BIN)/param.sfo
-	vita-pack-vpk -s $(BIN)/param.sfo -b $(BIN)/eboot.bin $@
+	vita-pack-vpk -s $(BIN)/param.sfo -b $(BIN)/eboot.bin \
 		--add sce_sys/icon0.png=sce_sys/icon0.png \
 		--add sce_sys/livearea/contents/bg.png=sce_sys/livearea/contents/bg.png \
 		--add sce_sys/livearea/contents/startup.png=sce_sys/livearea/contents/startup.png \
@@ -93,14 +92,11 @@ $(BIN)/$(TARGET).elf: binfolder $(OBJS)
 
 %.o: %.png
 	$(PREFIX)-ld -r -b binary -o $@ $^
-%.o: %.txt
-	$(PREFIX)-ld -r -b binary -o $@ $^
 
 
 
 clean:
-	@rm -rf $(BIN)/$(TARGET).vpk $(BIN)/$(TARGET).velf $(BIN)/$(TARGET).elf $(OBJS) \
-		$(BIN)/eboot.bin $(BIN)/param.sfo
+	@rm -rf $(BIN) $(OBJS)
 
 
 
