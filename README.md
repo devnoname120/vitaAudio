@@ -13,11 +13,11 @@
 
 ## Building
 
-To build Battle Arena, navigate to the directory containing `Makefile` and use the `make` command to build.
+To build the example, navigate to the directory containing `Makefile` and use the `make` command to build.
 
 ## Running
 
-To run Battle Arena:
+To run the example:
 - send the generated `.vpk` to your vita:
 	- start an FTP server on your vita.
 	- upload the vpk to the vita using a FTP client.
