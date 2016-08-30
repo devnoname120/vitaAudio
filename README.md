@@ -1,7 +1,7 @@
 # vitaAudio
 ###### *v0.4* 
 
-### Easy audio intergration with Vita-Homebrew projects.
+### Easy audio intergration for Vita-Homebrew projects.
 
 ![Alt text](http://www.playlight.com.au/vita/vitaAudio/info/vitaAudio.png "")
 
