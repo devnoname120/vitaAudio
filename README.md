@@ -3,6 +3,8 @@
 
 ### Easy audio intergration for Vita-Homebrew projects.
 
+Includes example
+
 ![Alt text](http://www.playlight.com.au/vita/vitaAudio/info/vitaAudio.png "")
 
 
