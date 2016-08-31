@@ -28,5 +28,5 @@ To run the example:
 
 
 
-## License
+Original code by Marcin DrakonPL & Ogg support by Andrew Church.
 
