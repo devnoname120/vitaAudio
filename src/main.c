@@ -14,7 +14,7 @@
 #include <psp2/kernel/processmgr.h>
 #include <vita2d.h>
 #include "vitaAudio/vitaAudio.h"
-#include "tools.h"
+
 
 
 // DEFINE HELPFUL MATH FUNCTIONS
