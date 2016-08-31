@@ -1,5 +1,5 @@
 # vitaAudio
-###### *v0.4* 
+###### *v0.5b* 
 
 ### Easy audio intergration for Vita-Homebrew projects.
 
