@@ -49,7 +49,21 @@ if ( touch_check_released )
 	btnstate_btn3				= 0;
 	
 	// BUTTONS
-	if ( point_in_rectangle( touch_x, touch_y, 44,  61, 362, 115 ) )	{ PlayAudio( &snd_button1 ); } 	// BUTTON 1
-	if ( point_in_rectangle( touch_x, touch_y, 44, 246, 362, 299 ) )	{  }	// BUTTON 2
-	if ( point_in_rectangle( touch_x, touch_y, 44, 425, 362, 478 ) )	{  }	// BUTTON 3
+	// BUTTON 1
+	if ( point_in_rectangle( touch_x, touch_y, 44,  61, 362, 115 ) )
+		{
+		vaudio_play_sound_wav( &snd_button1, "ux0:/app/VITAUDIO1/files/snd_button1.wav" );
+		}
+		
+	// BUTTON 2
+	if ( point_in_rectangle( touch_x, touch_y, 44, 246, 362, 299 ) )
+		{
+		vaudio_play_sound_wav( &snd_button2, "ux0:/app/VITAUDIO1/files/snd_button2.wav" );
+		}
+		
+	// BUTTON 3
+	if ( point_in_rectangle( touch_x, touch_y, 44, 425, 362, 478 ) )
+		{
+		vaudio_play_music_ogg( &snd_button3, "ux0:/app/VITAUDIO1/files/snd_button3.ogg" );
+		}
 	}
