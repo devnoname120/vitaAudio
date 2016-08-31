@@ -27,6 +27,14 @@ To run the example:
 - a new folder will be created under `ux0:/app/` named `/VITAUDIO/`.
 
 
+## vitaAudio.h
+```
+1
+2
+3
+folderg
+httpj
+```
 
 Original code by Marcin DrakonPL & Ogg support by Andrew Church.
 
