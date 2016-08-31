@@ -10,7 +10,8 @@
 #include "wav/wav.h"
 #include "ogg/ogg.h"
 
-static int32_t readWavHeader( AudioHandler* audioHandler );
+int vchannel	= 0;
+static int32_t readWavHeader( vaudio* audioHandler );
 
 static int32_t soundThread( uint32_t args, void *argc );
 static int32_t readThread(  uint32_t args, void *argc );
@@ -33,7 +34,7 @@ static const vorbis_callbacks_t streaming_callbacks = 	{
 
 
 // READ WAV HEADER
-static int32_t readWavHeader( AudioHandler* audioHandler )
+static int32_t readWavHeader( vaudio* audioHandler )
 	{
 	int32_t    ret = 0;
 	uint32_t   readSize;
@@ -95,9 +96,9 @@ static int32_t soundThread( uint32_t args, void *argc )
 	int32_t  portType;
 	int32_t  samplingRate;
 	int32_t  param;
-	AudioHandler* audioHandler;
+	vaudio* audioHandler;
 	printf ( "# Start-SoundThread\n" );
-	audioHandler = *( AudioHandler** )(argc);
+	audioHandler = *( vaudio** )(argc);
 	vol[0] = vol[1] = SCE_AUDIO_VOLUME_0DB;
 
 	// SET PORT TYPE, SAMPLING RATE, CHANNELS
@@ -173,9 +174,9 @@ static int32_t readThread( uint32_t args, void *argc )
 	int32_t  ret 		= 0;
 	uint32_t readSize 	= 0;
 	uint32_t capacity;
-	AudioHandler* audioHandler;
+	vaudio* audioHandler;
 	printf ( "# Start-ReadThread\n" );
-	audioHandler 		= *( AudioHandler** )(argc);
+	audioHandler 		= *( vaudio** )(argc);
 	readSize 			= audioHandler->dataSize;
 	if ( audioHandler->format == 0 )
 		{
@@ -264,7 +265,7 @@ term:
 
 
 
-int32_t TestOgg( AudioHandler* audioHandler )
+int32_t TestOgg( vaudio* audioHandler )
 	{
 	int count 		= 1;
 	int readData 	= 0;
@@ -285,10 +286,10 @@ int32_t TestOgg( AudioHandler* audioHandler )
 
 
 
-int32_t InitializeAudio( AudioHandler* audioHandler )
+int32_t InitializeAudio( vaudio* audioHandler )
 	{
 	int32_t ret 	= 0;
-	memset( audioHandler, 0, sizeof(AudioHandler) );
+	memset( audioHandler, 0, sizeof(vaudio) );
 	audioHandler->fileHandle 	= -1;
 	audioHandler->buffer 		= (uint8_t*)malloc(FILEBUF_SIZE);
 	// ERROR HANDLING
@@ -353,7 +354,7 @@ term:
 
 
 
-int32_t TerminateAudio( AudioHandler* audioHandler )
+int32_t TerminateAudio( vaudio* audioHandler )
 	{
 	audioHandler->endflag 	= AUDIO_STATUS_END;
 	if ( audioHandler->readThread > 0 	) { sceKernelWaitThreadEnd ( audioHandler->readThread, NULL, 0 ); }
@@ -370,7 +371,7 @@ int32_t TerminateAudio( AudioHandler* audioHandler )
 
 
 
-int32_t LoadOgg( AudioHandler* audioHandler, char* filename, SceUInt32 mode, SceUInt32 memory )
+int32_t LoadOgg( vaudio* audioHandler, char* filename, SceUInt32 mode, SceUInt32 memory )
 	{
 	int32_t ret 				= 0;
 	vorbis_t *handle 			= NULL;
@@ -422,7 +423,7 @@ term:
 
 
 
-int32_t LoadWav( AudioHandler* audioHandler, char* filename, SceUInt32 mode, SceUInt32 memory )
+int32_t LoadWav( vaudio* audioHandler, char* filename, SceUInt32 mode, SceUInt32 memory )
 	{
 	int32_t ret 				= 0;
 	audioHandler->mode 			= mode;
@@ -465,7 +466,7 @@ term:
 
 
 
-int32_t PlayAudio( AudioHandler* audioHandler )
+int32_t PlayAudio( vaudio* audioHandler )
 	{
 	int32_t ret 	= 0;
 	ret 			= sceKernelStartThread( audioHandler->readThread, sizeof(audioHandler), &audioHandler );
@@ -488,7 +489,7 @@ term:
 
 
 
-int32_t StopAudio( AudioHandler* audioHandler )
+int32_t StopAudio( vaudio* audioHandler )
 	{
 	audioHandler->endflag = AUDIO_STATUS_END;
 	if ( audioHandler->readThread  > 0 ) { sceKernelWaitThreadEnd( audioHandler->readThread, NULL, NULL ); }
@@ -501,4 +502,70 @@ int32_t StopAudio( AudioHandler* audioHandler )
 
 
 
-int32_t GetAudioStatus( AudioHandler* audioHandler ) { return audioHandler->endflag; }
+uint32_t GetAudioStatus( vaudio* audioHandler ) { return audioHandler->endflag; }
+
+
+
+
+
+//-----------------------------------------
+// 	vaudio snd_my_sound;
+//  vaudio_play_sound_wav( snd_my_sound, "mysound.wav" );
+void vaudio_play_sound_wav( vaudio *audioHandler, char* filename )
+	{
+	StopAudio( audioHandler );
+	InitializeAudio( audioHandler );
+	LoadWav( audioHandler, filename, AUDIO_OUT_MAIN, vchannel );
+	PlayAudio( audioHandler );
+	vchannel++;
+	if ( vchannel >= 8 ) { vchannel = 0; }
+	}
+
+void vaudio_play_sound_ogg( vaudio *audioHandler, char* filename )
+	{
+	StopAudio( audioHandler );
+	InitializeAudio( audioHandler );
+	LoadOgg( audioHandler, filename, AUDIO_OUT_MAIN, vchannel );
+	PlayAudio( audioHandler );
+	vchannel++;
+	if ( vchannel >= 8 ) { vchannel = 0; }
+	}
+
+void vaudio_play_music_wav( vaudio *audioHandler, char* filename )
+	{
+	int32_t is 	= 0;
+	is 			= GetAudioStatus( audioHandler );
+	if ( is == AUDIO_STATUS_END ) { StopAudio( audioHandler ); }
+	InitializeAudio( audioHandler );
+	LoadWav( audioHandler, filename, AUDIO_OUT_BGM, 0 );
+	PlayAudio( audioHandler );
+	}
+
+void vaudio_play_music_ogg( vaudio *audioHandler, char* filename )
+	{
+	int32_t is 	= 0;
+	is 			= GetAudioStatus( audioHandler );
+	if ( is == AUDIO_STATUS_END ) { StopAudio( audioHandler ); }
+	InitializeAudio( audioHandler );
+	LoadOgg( audioHandler, filename, AUDIO_OUT_BGM, 0 );
+	PlayAudio( audioHandler );
+	}
+
+void vaudio_stop( vaudio *audioHandler )
+	{
+	StopAudio( audioHandler );
+	}
+	
+int vaudio_is_playing( vaudio *audioHandler )
+	{
+	int32_t is 	= 0;
+	is 			= GetAudioStatus( audioHandler );
+	if ( is == AUDIO_STATUS_END ) { return 0; }
+	else						  { return 1; }
+	}
+
+void vaudio_free( vaudio *audioHandler )
+	{
+	StopAudio( audioHandler );
+	TerminateAudio( audioHandler );
+	}

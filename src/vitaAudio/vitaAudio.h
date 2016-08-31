@@ -29,19 +29,23 @@ typedef struct
 	uint32_t		channels;
 	uint32_t		samplingRate;
 	int16_t			wavBuff[BUFNUM][USER_GRAIN*STEREO];
-	} AudioHandler;
+	} vaudio;
+// Specify a vitaAudio variable
+// vaudio snd_text_soud;
 
-int32_t InitializeAudio( AudioHandler* audioHandler );
-int32_t TerminateAudio ( AudioHandler* audioHandler );
 
-int32_t LoadWav( AudioHandler* audioHandler, char* filename, SceUInt32 mode, SceUInt32 memory );
-int32_t LoadOgg( AudioHandler* audioHandler, char* filename, SceUInt32 mode, SceUInt32 memory );
+void vaudio_play_sound_wav( vaudio *audioHandler, char* filename );
 
-int32_t TestOgg( AudioHandler* audioHandler );
+void vaudio_play_sound_ogg( vaudio *audioHandler, char* filename );
 
-int32_t PlayAudio( AudioHandler* audioHandler );
-int32_t StopAudio( AudioHandler* audioHandler );
+void vaudio_play_music_wav( vaudio *audioHandler, char* filename );
 
-int32_t GetAudioStatus( AudioHandler* audioHandler );
+void vaudio_play_music_ogg( vaudio *audioHandler, char* filename );
+
+void vaudio_stop( vaudio *audioHandler );
+	
+int vaudio_is_playing( vaudio *audioHandler );
+
+void vaudio_free( vaudio *audioHandler );
 
 #endif // _AUDIO_H

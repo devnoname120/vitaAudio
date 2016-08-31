@@ -14,6 +14,7 @@
 #include <psp2/kernel/processmgr.h>
 #include <vita2d.h>
 #include "vitaAudio/vitaAudio.h"
+#include "tools.h"
 
 
 // DEFINE HELPFUL MATH FUNCTIONS
@@ -43,13 +44,16 @@ int btnstate_btn3				= 0;
 
 
 // CREATE AUDIO HANDLERS
-AudioHandler snd_button1;
+vaudio snd_button1;
+vaudio snd_button2;
+vaudio snd_button3;
 
 
 
 // MAIN LOOP
 int main()
 	{
+	dir_create( "ux0:/data/vitaAudio/" );
 	// INITIALIZE VITA2D
 	vita2d_init();
 	vita2d_set_clear_color( RGBA8(0x40, 0x40, 0x40, 0xFF) );
@@ -67,11 +71,6 @@ int main()
 	sceTouchSetSamplingState( SCE_TOUCH_PORT_FRONT, 1 );
 	sceTouchSetSamplingState( SCE_TOUCH_PORT_BACK,  1 );
 	
-	// INITIALIZE AUDIO
-	InitializeAudio( &snd_button1 );
-	
-	// LOAD AUDIO FILES
-	LoadWav( &snd_button1, "ux0:/app/VITAUDIO1/files/snd_button1.wav", AUDIO_OUT_MAIN, 0 );
 	
 	while (1)
 		{
@@ -120,6 +119,10 @@ int main()
 	vita2d_fini();
 	vita2d_free_texture( img_btn );
 	vita2d_free_texture( img_btnp );
+	vaudio_stop	( &snd_button1 );
+	vaudio_free	( &snd_button1 );
+	vaudio_stop	( &snd_button2 );
+	vaudio_free	( &snd_button2 );
 	
 	// CALL EXIT PROCCESS
 	sceKernelExitProcess(0);
