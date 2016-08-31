@@ -27,14 +27,48 @@ To run the example:
 - a new folder will be created under `ux0:/app/` named `/VITAUDIO/`.
 
 
-## vitaAudio.h
-```
-1
-2
-3
-folderg
-httpj
-```
-
 Original code by Marcin DrakonPL & Ogg support by Andrew Church.
 
+## Functions
+```
+// initialize a vitaAudio pointer
+vaudio snd_mysound;
+```
+
+```
+// play WAV sound
+vaudio_play_sound_wav( snd_mysound, "ux0:/data/vitaAudio/files/mysound.wav" );
+```
+
+```
+// play OGG sound
+vaudio_play_sound_ogg( snd_mysound, "ux0:/data/vitaAudio/files/mysound.ogg" );
+```
+
+```
+// play wave background music
+vaudio_play_music_wav( snd_mysound, "ux0:/data/vitaAudio/files/mysound.wav" );
+```
+
+```
+// play OGG background music
+vaudio_play_music_ogg( snd_mysound, "ux0:/data/vitaAudio/files/mysound.ogg" );
+```
+
+
+
+
+```
+// stop sound or music playback
+vaudio_stop( snd_mysound );
+```
+
+```
+// check audio playback
+vaudio_is_playing( snd_mysound );
+```
+
+```
+// free resources from memory
+vaudio_free( snd_mysound );
+```
