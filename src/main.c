@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <psp2/io/stat.h>
 #include <psp2/touch.h>
 #include <psp2/kernel/processmgr.h>
 #include <vita2d.h>
@@ -53,7 +54,7 @@ vaudio snd_button3;
 // MAIN LOOP
 int main()
 	{
-	dir_create( "ux0:/data/vitaAudio/" );
+	sceIoMkdir( "ux0:/data/vitaAudio/", 0777 );
 	// INITIALIZE VITA2D
 	vita2d_init();
 	vita2d_set_clear_color( RGBA8(0x40, 0x40, 0x40, 0xFF) );

@@ -27,7 +27,6 @@ OBJS     	= 	src/main.o resources/sprites/img_bg.o resources/sprites/img_btn.o r
 				src/vitaAudio/vitaAudio.o
 
 LIBS 		= 	-lvita2d								\
-				-lSceKernel_stub 						\
 				-lSceGxm_stub 							\
 				-lSceSysmodule_stub						\
 				-lSceCtrl_stub							\
